@@ -5,9 +5,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:gravity="center">
-    <Button
-        android:id="@+id/start"
+
+    <RelativeLayout
+        android:id="@+id/pilotSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <EditText
+            android:id="@+id/nameTOsearch"
+            android:minWidth="200dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/searchPilot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="search"
+            android:layout_below="@id/nameTOsearch"/>
+    </RelativeLayout>
+    <ProgressBar
+        android:id="@+id/loader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="start"/>
+        android:visibility="invisible"
+        android:layout_below="@id/pilotSearch"/>
+
 </RelativeLayout>
