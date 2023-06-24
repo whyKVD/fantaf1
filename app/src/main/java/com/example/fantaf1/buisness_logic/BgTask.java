@@ -3,7 +3,6 @@ package com.example.fantaf1.buisness_logic;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.fantaf1.classes.Constructor;
 import com.example.fantaf1.classes.Pilota;
@@ -46,8 +45,7 @@ public class BgTask {
                 case "readFile":
                     BgTask.this.action = params[0];
                     try {
-                        FileInputStream fis = g.getContext().openFileInput("drivers.json");
-                        InputStreamReader isr = new InputStreamReader(fis);
+                        InputStreamReader isr = new InputStreamReader(g.getContext().getResources().openRawResource(R.raw.drivers));
                         BufferedReader bufferedReader = new BufferedReader(isr);
                         StringBuilder sb = new StringBuilder();
                         String line;
@@ -63,7 +61,6 @@ public class BgTask {
                 case "findPilot":
                     BgTask.this.action = params[0];
                     g.findPilots(params[1]);
-                    g.getContext().runOnUiThread(() -> Toast.makeText(g.getContext(), params[1], Toast.LENGTH_SHORT).show());
                     break;
                 default:
                     break;

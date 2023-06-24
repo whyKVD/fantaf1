@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,8 +33,7 @@ public class Gestore {
 
     public void findPilots(String id){
         for (Pilota p : pilots) {
-            context.runOnUiThread(() -> Toast.makeText(context, p.getDriverId(), Toast.LENGTH_SHORT).show());
-            if (p.getDriverId().equalsIgnoreCase(id) | p.getName().equalsIgnoreCase(id) | p.getSecond_name().equalsIgnoreCase(id))
+            if (id.toLowerCase().contains(p.getName().toLowerCase()) | id.toLowerCase().contains(p.getSecond_name().toLowerCase()))
                 for (Constructor c : constructors) {
                     if (c.getConstructorId().equalsIgnoreCase(p.getConstructor())) {
                         startActivity("pilota", PilotActivity.class, p, c, p.getStandings());
