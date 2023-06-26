@@ -3,25 +3,29 @@ package com.example.fantaf1.buisness_logic;
 import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fantaf1.PilotActivity;
+import com.example.fantaf1.R;
 import com.example.fantaf1.classes.Constructor;
 import com.example.fantaf1.classes.Pilota;
 import com.example.fantaf1.classes.Standing;
 import com.example.fantaf1.view.BottomMenu;
+import com.example.fantaf1.view.FormationCard;
 
 import java.util.ArrayList;
 
 public class Gestore {
-    private AppCompatActivity context;
+    private final AppCompatActivity context;
     private ArrayList<Pilota> pilots = null;
     private ArrayList<Constructor> constructors = null;
-    private Button home = null;
-    private Button formation = null;
+    private final Button home = null;
+    private final Button formation = null;
     private final BottomMenu bm;
+    private boolean created = false;
 
     public Gestore(AppCompatActivity aContext){
         context = aContext;
@@ -75,5 +79,34 @@ public class Gestore {
 
     public AppCompatActivity getContext() {
         return context;
+    }
+
+    public boolean isCreated() {
+        return created;
+    }
+
+    public void setCreated(boolean created) {
+        this.created = created;
+    }
+
+    public void initRow(int row) {
+        LinearLayout l = context.findViewById(row);
+        for (int i = 0; i < 3; i++) {
+            FormationCard f = new FormationCard(context,getPilots());
+            l.addView(f.getV());
+        }
+    }
+
+    public void row(int i) {
+        switch (i){
+            case 1:initRow(R.id.firstRow);
+                break;
+            case 2:initRow(R.id.secondRow);
+                break;
+            case 3:initRow(R.id.thirdRow);
+                break;
+            default:
+                break;
+        }
     }
 }

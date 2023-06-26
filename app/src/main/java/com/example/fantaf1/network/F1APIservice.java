@@ -37,7 +37,7 @@ public class F1APIservice {
         }
         for(int i = 0; i < pilots.size(); i++){
             start = System.currentTimeMillis();
-            interrogateUrl(i,"standings","http://ergast.com/api/f1/current/drivers/"+ pilots.get(i).getDriverId() +"/results.json");
+            interrogateUrl(i,"standings","https://ergast.com/api/f1/current/drivers/"+ pilots.get(i).getDriverId() +"/results.json");
         }
         ArrayList<Object> pilotsANDcons = new ArrayList<>();
         pilotsANDcons.add(pilots);

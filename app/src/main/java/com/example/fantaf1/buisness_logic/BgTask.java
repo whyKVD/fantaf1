@@ -1,9 +1,12 @@
 package com.example.fantaf1.buisness_logic;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
+import com.example.fantaf1.FormationActivity;
+import com.example.fantaf1.MainActivity;
 import com.example.fantaf1.classes.Constructor;
 import com.example.fantaf1.classes.Pilota;
 import com.example.fantaf1.R;
@@ -13,12 +16,17 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
+import com.google.gson.Gson;
 
 public class BgTask {
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -36,8 +44,14 @@ public class BgTask {
                     F1APIservice f1APIservice = new F1APIservice();
                     try {
                         ArrayList<Object> obj = f1APIservice.fetchData();
-                        g.setPilots((ArrayList<Pilota>) obj.get(0));
-                        g.setConstructors((ArrayList<Constructor>) obj.get(1));
+                        File file = new File(g.getContext().getFilesDir(), "drivers.json");
+
+                        FileOutputStream fos = new FileOutputStream(file);
+                        OutputStreamWriter osw = new OutputStreamWriter(fos);
+                        osw.write(new Gson().toJson(obj));
+                        osw.flush();
+                        osw.close();
+                        fos.close();
                     }catch (Exception ex){
                         ex.printStackTrace();
                     }
@@ -45,18 +59,27 @@ public class BgTask {
                 case "readFile":
                     BgTask.this.action = params[0];
                     try {
-                        InputStreamReader isr = new InputStreamReader(g.getContext().getResources().openRawResource(R.raw.drivers));
-                        BufferedReader bufferedReader = new BufferedReader(isr);
+                        File file = new File(g.getContext().getFilesDir(), "drivers.json");
+
+                        FileInputStream fis = new FileInputStream(file);
+                        InputStreamReader isr = new InputStreamReader(fis);
+                        BufferedReader br = new BufferedReader(isr);
+
                         StringBuilder sb = new StringBuilder();
                         String line;
-                        while ((line = bufferedReader.readLine()) != null) {
+                        while ((line = br.readLine()) != null) {
                             sb.append(line);
                         }
+
+                        br.close();
+                        isr.close();
+                        fis.close();
+
                         JSONArray pAc = new JSONArray(sb.toString());
                         parsePAC(pAc,g);
-                }catch(Exception ex){
-                    ex.printStackTrace();
-                }
+                    }catch(Exception ex){
+                        ex.printStackTrace();
+                    }
                     break;
                 case "findPilot":
                     BgTask.this.action = params[0];
@@ -68,6 +91,18 @@ public class BgTask {
 
             handler.post(() ->{
                 switch (action){
+                    case "client":
+                        Intent i = new Intent(g.getContext(), MainActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        g.getContext().startActivity(i);
+                        break;
+                    case "readFile":
+                        if (g.getContext().getClass().equals(FormationActivity.class)) {
+                            g.row(1);
+                            g.row(2);
+                            g.row(3);
+                        }
+                        break;
                     default:
                         break;
                 }
