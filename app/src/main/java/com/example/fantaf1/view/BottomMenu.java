@@ -1,7 +1,9 @@
 package com.example.fantaf1.view;
 
 import android.content.Intent;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,5 +33,8 @@ public class BottomMenu extends ParentView{
                 return;
             a.startActivity(new Intent(a, FormationActivity.class));
         });
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        context.runOnUiThread(() -> context.addContentView(v, params));
     }
 }

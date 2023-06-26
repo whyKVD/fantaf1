@@ -1,13 +1,12 @@
 package com.example.fantaf1.buisness_logic;
 
 import android.content.Intent;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fantaf1.FirstActivity;
 import com.example.fantaf1.PilotActivity;
 import com.example.fantaf1.R;
 import com.example.fantaf1.classes.Constructor;
@@ -24,14 +23,12 @@ public class Gestore {
     private ArrayList<Constructor> constructors = null;
     private final Button home = null;
     private final Button formation = null;
-    private final BottomMenu bm;
+    private BottomMenu bm = null;
 
     public Gestore(AppCompatActivity aContext){
         context = aContext;
-        bm = new BottomMenu(context);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        context.runOnUiThread(() -> context.addContentView(bm.getV(), params));
+        if(!context.getClass().equals(FirstActivity.class))
+            bm = new BottomMenu(context);
     }
 
     public void findPilots(String id){
