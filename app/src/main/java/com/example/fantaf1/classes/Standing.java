@@ -68,6 +68,7 @@ public class Standing implements Parcelable {
         return circuit;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Standing{" + "raceName=" + raceName + ", pos=" + pos + ", date=" + date + ", circuit=" + circuit.toString() + '}';

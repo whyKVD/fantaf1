@@ -1,22 +1,60 @@
 package com.example.fantaf1;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkCapabilities;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.datastore.preferences.core.MutablePreferences;
+import androidx.datastore.preferences.core.Preferences;
+import androidx.datastore.preferences.core.PreferencesKeys;
+import androidx.datastore.preferences.rxjava2.RxPreferenceDataStoreBuilder;
+import androidx.datastore.rxjava2.RxDataStore;
+
 import com.example.fantaf1.buisness_logic.BgTask;
 import com.example.fantaf1.buisness_logic.Gestore;
 
+import java.util.Calendar;
+import java.util.Map;
+
+import io.reactivex.Single;
+
 public class FirstActivity extends AppCompatActivity {
+
+    RxDataStore<Preferences> dataStore;
+
+    Preferences pref_error = new Preferences() {
+        @Override
+        public <T> boolean contains(@NonNull Key<T> key) {
+            return false;
+        }
+
+        @Nullable
+        @Override
+        public <T> T get(@NonNull Key<T> key) {
+            return null;
+        }
+
+        @NonNull
+        @Override
+        public Map<Key<?>, Object> asMap() {
+            return null;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
-        if(isDeviceOnline()) {
+        dataStore = new RxPreferenceDataStoreBuilder(this, "database").build();
+        Calendar calendar = Calendar.getInstance();
+        int currDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int lastDay = getIntegerValue();
+        if(isDeviceOnline() && currDay != lastDay) {
+            putIntegerValue(currDay);
             Gestore g = new Gestore(this);
             new BgTask(g, "client");
         }else {
@@ -36,5 +74,23 @@ public class FirstActivity extends AppCompatActivity {
                     networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) &&
                     networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_NOT_SUSPENDED);
         }
+    }
+
+    public boolean putIntegerValue(Integer value){
+        boolean returnvalue;
+        Preferences.Key<Integer> PREF_KEY = PreferencesKeys.intKey("day");
+        Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
+            MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
+            mutablePreferences.set(PREF_KEY, value);
+            return Single.just(mutablePreferences);
+        }).onErrorReturnItem(pref_error);
+        returnvalue = updateResult.blockingGet() != pref_error;
+        return returnvalue;
+    }
+
+    int getIntegerValue() {
+        Preferences.Key<Integer> PREF_KEY = PreferencesKeys.intKey("day");
+        Single<Integer> value = dataStore.data().firstOrError().map(prefs -> prefs.get(PREF_KEY)).onErrorReturnItem(-1);
+        return value.blockingGet();
     }
 }

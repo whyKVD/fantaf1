@@ -25,7 +25,6 @@ public class Gestore {
     private final Button home = null;
     private final Button formation = null;
     private final BottomMenu bm;
-    private boolean created = false;
 
     public Gestore(AppCompatActivity aContext){
         context = aContext;
@@ -79,14 +78,6 @@ public class Gestore {
 
     public AppCompatActivity getContext() {
         return context;
-    }
-
-    public boolean isCreated() {
-        return created;
-    }
-
-    public void setCreated(boolean created) {
-        this.created = created;
     }
 
     public void initRow(int row) {

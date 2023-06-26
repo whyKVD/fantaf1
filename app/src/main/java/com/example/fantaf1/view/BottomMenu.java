@@ -1,10 +1,7 @@
 package com.example.fantaf1.view;
 
 import android.content.Intent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 

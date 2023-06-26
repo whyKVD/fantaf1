@@ -3,7 +3,6 @@ package com.example.fantaf1.view;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,13 +14,13 @@ import java.util.ArrayList;
 
 public class FormationCard extends ParentView{
 
-    private FloatingActionButton add;
-    private TextView name,
+    private final FloatingActionButton add;
+    private final TextView name,
                 secondName,
                 number;
-    private ArrayList<Pilota> p = null;
-    private ArrayList<DriverCard> dcs= new ArrayList<>();
-    private LinearLayout l;
+    private final ArrayList<Pilota> p;
+    private final ArrayList<DriverCard> dcs= new ArrayList<>();
+    private final LinearLayout l;
 
     public FormationCard(AppCompatActivity aContext, ArrayList<Pilota> aP) {
         super(aContext, R.layout.formation_card);

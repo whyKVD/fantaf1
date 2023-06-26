@@ -60,7 +60,7 @@ public class Pilota implements Parcelable {
                 JSONObject obj = (JSONObject) sts.get(i);
                 Standing s = new Standing(obj);
                 standings.add(s);
-            }catch (Exception ex){}
+            }catch (Exception ignored){}
         }
     }
 
@@ -93,8 +93,8 @@ public class Pilota implements Parcelable {
             name = obj.get("name").toString();
             second_name = obj.get("second_name").toString();
             perm_num = Integer.parseInt(obj.get("perm_num").toString());
-            setStandings((JSONArray) obj.getJSONArray("standings"));
-        }catch (Exception ex){}
+            setStandings(obj.getJSONArray("standings"));
+        }catch (Exception ignored){}
     }
 
     public void addPoint(JSONObject result) {
@@ -127,7 +127,7 @@ public class Pilota implements Parcelable {
                 default:
                     break;
             }
-        }catch (Exception e){}
+        }catch (Exception ignored){}
     }
 
     public String getConstructor() {
@@ -162,6 +162,7 @@ public class Pilota implements Parcelable {
         return perm_num;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Pilota{" + "constructor=" + constructor + ", code=" + code + ", birth_date=" + birth_date + ", nationality=" + nationality + ", name=" + name + ", second_name=" + second_name + ", driverId=" + driverId + ", perm_num=" + perm_num + '}';

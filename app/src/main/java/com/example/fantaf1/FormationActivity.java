@@ -1,17 +1,11 @@
 package com.example.fantaf1;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fantaf1.buisness_logic.BgTask;
 import com.example.fantaf1.buisness_logic.Gestore;
-import com.example.fantaf1.classes.Pilota;
-import com.example.fantaf1.view.FormationCard;
-
-import java.util.ArrayList;
 
 public class FormationActivity extends AppCompatActivity {
 

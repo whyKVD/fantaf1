@@ -1,10 +1,10 @@
 package com.example.fantaf1.network;
 
-import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.example.fantaf1.classes.*;
+import com.example.fantaf1.classes.Circuit;
+import com.example.fantaf1.classes.Constructor;
+import com.example.fantaf1.classes.Location;
+import com.example.fantaf1.classes.Pilota;
+import com.example.fantaf1.classes.Standing;
 
 import org.json.JSONArray;
 import org.json.JSONException;

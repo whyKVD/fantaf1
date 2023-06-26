@@ -7,10 +7,11 @@ import android.view.View;
 
 import com.example.fantaf1.FormationActivity;
 import com.example.fantaf1.MainActivity;
+import com.example.fantaf1.R;
 import com.example.fantaf1.classes.Constructor;
 import com.example.fantaf1.classes.Pilota;
-import com.example.fantaf1.R;
 import com.example.fantaf1.network.F1APIservice;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,22 +20,20 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
-import com.google.gson.Gson;
 
 public class BgTask {
-    private final Executor executor = Executors.newSingleThreadExecutor();
     private final Handler handler = new Handler(Looper.getMainLooper());
     private String action = null;
 
     public BgTask(Gestore g, String... params){
         AtomicReference<String> data = null;
+        Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             g.getContext().runOnUiThread(() -> g.getContext().findViewById(R.id.loader).setVisibility(View.VISIBLE));
             switch (params[0]) {
@@ -126,6 +125,6 @@ public class BgTask {
             }
             g.setPilots(pilots);
             g.setConstructors(constructors);
-        }catch (Exception ex){}
+        }catch (Exception ignored){}
     }
 }

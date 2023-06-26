@@ -1,11 +1,11 @@
 package com.example.fantaf1;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fantaf1.buisness_logic.Gestore;
 import com.example.fantaf1.classes.Pilota;
@@ -20,21 +20,18 @@ public class PilotActivity extends AppCompatActivity {
 
     private ArrayList<Standing> standings;
 
-    private LinearLayout stScroll;
-    private Gestore g = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pilot);
-        g = new Gestore(this);
-        stScroll = findViewById(R.id.standings);
+        Gestore g = new Gestore(this);
+        LinearLayout stScroll = findViewById(R.id.standings);
         getExtra();
-        TextView name = (TextView) findViewById(R.id.name);
-        TextView second_name = (TextView) findViewById(R.id.secondName);
-        TextView permNum = (TextView) findViewById(R.id.permNum);
-        TextView constructor = (TextView) findViewById(R.id.constructor);
-        TextView nationality = (TextView) findViewById(R.id.nationality);
+        TextView name = findViewById(R.id.name);
+        TextView second_name = findViewById(R.id.secondName);
+        TextView permNum = findViewById(R.id.permNum);
+        TextView constructor = findViewById(R.id.constructor);
+        TextView nationality = findViewById(R.id.nationality);
 
         name.setText(p.getName());
         second_name.setText(p.getSecond_name());

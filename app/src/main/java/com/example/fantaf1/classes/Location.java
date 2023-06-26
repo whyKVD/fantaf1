@@ -1,5 +1,7 @@
 package com.example.fantaf1.classes;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONObject;
 
 /**
@@ -19,7 +21,7 @@ public class Location {
         try {
             locality = obj.get("locality").toString();
             country = obj.get("country").toString();
-        }catch(Exception ex){}
+        }catch(Exception ignored){}
     }
 
     public String getLocality() {
@@ -30,6 +32,7 @@ public class Location {
         return country;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Location{" + "locality=" + locality + ", country=" + country + '}';

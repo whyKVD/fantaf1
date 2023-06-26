@@ -27,7 +27,7 @@ public class Constructor implements Parcelable {
             constructorId = obj.get("constructorId").toString();
             name = obj.get("name").toString();
             nationality = obj.get("nationality").toString();
-        }catch (Exception ex){}
+        }catch (Exception ignored){}
     }
 
     protected Constructor(Parcel in) {
@@ -56,6 +56,7 @@ public class Constructor implements Parcelable {
         return name;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Constructor{" + "constructorId=" + constructorId + ", name=" + name + '}';

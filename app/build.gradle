@@ -44,6 +44,10 @@ dependencies {
     implementation 'org.json:json:20230618'
     // https://mvnrepository.com/artifact/com.google.gson/gson
     implementation 'com.google.code.gson:gson:2.10.1'
+    //DataStore instead of SharedPreferences
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+    //RxJava2 support
+    implementation "androidx.datastore:datastore-preferences-rxjava2:1.0.0"
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'

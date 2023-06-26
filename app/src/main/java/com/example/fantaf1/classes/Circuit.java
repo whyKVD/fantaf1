@@ -1,6 +1,8 @@
 package com.example.fantaf1.classes;
 
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONObject;
 
 /**
@@ -23,7 +25,7 @@ public class Circuit {
             circuitId = obj.get("circuitId").toString();
             circuitName = obj.get("circuitName").toString();
             location = new Location((JSONObject) obj.get("location"));
-        }catch (Exception ex){}
+        }catch (Exception ignored){}
     }
 
     public String getRaceId() {
@@ -38,6 +40,7 @@ public class Circuit {
         return location;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Circuit{" + "raceId=" + circuitId + ", circuitName=" + circuitName + ", location=" + location.toString() + '}';

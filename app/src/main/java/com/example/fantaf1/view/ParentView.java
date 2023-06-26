@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class ParentView {
-    protected View v = null;
+    protected View v;
     protected AppCompatActivity context;
 
     public ParentView(AppCompatActivity aContext, int aLayoutId){
