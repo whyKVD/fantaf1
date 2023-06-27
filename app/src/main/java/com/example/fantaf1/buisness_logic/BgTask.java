@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
+import com.example.fantaf1.FirstActivity;
 import com.example.fantaf1.FormationActivity;
 import com.example.fantaf1.MainActivity;
 import com.example.fantaf1.R;
@@ -37,10 +38,10 @@ public class BgTask {
         executor.execute(() -> {
             g.getContext().runOnUiThread(() -> g.getContext().findViewById(R.id.loader).setVisibility(View.VISIBLE));
             switch (params[0]) {
-                case "client":
+                case "fetchData":
                     BgTask.this.action = params[0];
                     //fetching data from api
-                    F1APIservice f1APIservice = new F1APIservice();
+                    F1APIservice f1APIservice = new F1APIservice(g);
                     try {
                         ArrayList<Object> obj = f1APIservice.fetchData();
                         File file = new File(g.getContext().getFilesDir(), "drivers.json");
@@ -90,7 +91,7 @@ public class BgTask {
 
             handler.post(() ->{
                 switch (action){
-                    case "client":
+                    case "fetchData":
                         Intent i = new Intent(g.getContext(), MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         g.getContext().startActivity(i);
@@ -100,6 +101,24 @@ public class BgTask {
                             g.row(1);
                             g.row(2);
                             g.row(3);
+                        } else if (g.getContext().getClass().equals(FirstActivity.class)) {
+                            F1APIservice f1 = new F1APIservice(g);
+                            try {
+                                ArrayList<Object> obj = f1.updateStandings();
+                                File file = new File(g.getContext().getFilesDir(), "drivers.json");
+
+                                FileOutputStream fos = new FileOutputStream(file);
+                                OutputStreamWriter osw = new OutputStreamWriter(fos);
+                                osw.write(new Gson().toJson(obj));
+                                osw.flush();
+                                osw.close();
+                                fos.close();
+                            }catch(Exception ex){}
+
+                            i = new Intent(g.getContext(), MainActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            g.getContext().startActivity(i);
+                            break;
                         }
                         break;
                     default:

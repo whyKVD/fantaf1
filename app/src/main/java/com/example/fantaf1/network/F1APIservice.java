@@ -1,5 +1,11 @@
 package com.example.fantaf1.network;
 
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.fantaf1.R;
+import com.example.fantaf1.buisness_logic.Gestore;
 import com.example.fantaf1.classes.Circuit;
 import com.example.fantaf1.classes.Constructor;
 import com.example.fantaf1.classes.Location;
@@ -19,22 +25,31 @@ import java.util.Scanner;
 public class F1APIservice {
     private final ArrayList<Pilota> pilots = new ArrayList<>();
     private ArrayList<Standing> standings = null;
-    private final int MINTIME = 1000;
+    private final int MINTIME = 270;
     private String records = "";
     private int responseCode = 0;
     private URL url = null;
     private long start = 0;
     private final ArrayList<Constructor> constructors = new ArrayList<>();
 
-    public F1APIservice(){}
+    private final AppCompatActivity context;
+    private final Gestore g;
+
+    public F1APIservice(Gestore aG){
+        g = aG;
+        context = aG.getContext();
+    }
 
     public ArrayList<Object>  fetchData(){
         start = System.currentTimeMillis();
+        sendMessage("scaricando i costruttori...");
         interrogateUrl(0,"constructors","https://ergast.com/api/f1/current/constructors.json");
+        sendMessage("scaricando i piloti...");
         for(int i = 0; i < constructors.size(); i++){
             start = System.currentTimeMillis();
             interrogateUrl(i,"piloti","https://ergast.com/api/f1/current/constructors/"+constructors.get(i).getConstructorId()+"/drivers.json",constructors.get(i).getConstructorId());
         }
+        sendMessage("scaricando i piazzamenti...");
         for(int i = 0; i < pilots.size(); i++){
             start = System.currentTimeMillis();
             interrogateUrl(i,"standings","https://ergast.com/api/f1/current/drivers/"+ pilots.get(i).getDriverId() +"/results.json");
@@ -43,6 +58,25 @@ public class F1APIservice {
         pilotsANDcons.add(pilots);
         pilotsANDcons.add(constructors);
         return pilotsANDcons;
+    }
+
+    public ArrayList<Object> updateStandings() {
+        sendMessage("aggiornando i piazzamenti...");
+        for(int i = 0; i < g.getPilots().size(); i++){
+            start = System.currentTimeMillis();
+            interrogateUrl(i,"updatestandings","https://ergast.com/api/f1/current/drivers/"+ g.getPilots().get(i).getDriverId() +"/results.json");
+        }
+        ArrayList<Object> pilotsANDcons = new ArrayList<>();
+        pilotsANDcons.add(pilots);
+        pilotsANDcons.add(constructors);
+        return pilotsANDcons;
+    }
+
+    private void sendMessage(String aMessage) {
+        context.runOnUiThread(()->{
+            TextView t = context.findViewById(R.id.message);
+            t.setText(aMessage);
+        });
     }
 
     private void interrogateUrl(int i,String... q){
@@ -62,20 +96,51 @@ public class F1APIservice {
                 records += "CONNECTION FAILED:\t" + responseCode;
             } else if (url != null) {
             switch (q[0]) {
-                case "constructors":
-                    constructorsParsing();
-                    break;
-                case "piloti":
-                        pilotsParsing(q[2]);
-                    break;
-                case "standings":
-                    standingsParsing(i);
-                    break;
-                default:
-                    break;
+                case "constructors" -> constructorsParsing();
+                
+                case "piloti" -> pilotsParsing(q[2]);
+                
+                case "standings" -> standingsParsing(i);
+                
+                case "updatestandings" -> updateS(i);
+                default -> {}
             }
         }
         url = null;
+    }
+
+    private void updateS(int i) {
+        try {
+            JSONObject obj = parseJson();
+            //Get the required object from the above created object
+
+            JSONArray races = (JSONArray) (getObject(getObject(obj, "MRData"), "RaceTable")).get("Races");
+
+            g.getPilots().get(i).addStanding(addS((JSONObject) races.get(races.length() - 1)));
+        }catch(Exception ex){}
+
+        long delay = MINTIME - (System.currentTimeMillis()-start);
+        if(delay > 0){
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException ex){}
+        }
+    }
+    private static Standing addS(JSONObject obj){
+        try {
+            return new Standing(obj.get("raceName").toString(),
+                    ((JSONObject) ((JSONArray) obj.get("Results")).get(0)).get("position").toString(),
+                    obj.get("date").toString(),
+                    new Circuit(((JSONObject) obj.get("Circuit")).get("circuitId").toString(),
+                            ((JSONObject) obj.get("Circuit")).get("circuitName").toString(),
+                            new Location(((JSONObject) ((JSONObject) obj.get("Circuit")).get("Location")).get("locality").toString(),
+                                    ((JSONObject) ((JSONObject) obj.get("Circuit")).get("Location")).get("country").toString()
+                            )
+                    )
+            );
+        }catch(Exception ex){
+            return null;
+        }
     }
 
     private JSONObject parseJson(){
@@ -178,15 +243,6 @@ public class F1APIservice {
                 e.printStackTrace();
             }
         }
-
-        long delay = MINTIME - (System.currentTimeMillis()-start);
-        if(delay > 0){
-            try {
-                Thread.sleep(delay);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-        }
     }
 
     private JSONObject getObject(JSONObject obj, String key) throws JSONException {
@@ -239,5 +295,4 @@ public class F1APIservice {
             e.printStackTrace();
         }
     }
-
 }

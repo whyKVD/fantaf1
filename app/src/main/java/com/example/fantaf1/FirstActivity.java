@@ -51,16 +51,24 @@ public class FirstActivity extends AppCompatActivity {
         setContentView(R.layout.activity_first);
         dataStore = new RxPreferenceDataStoreBuilder(this, "database").build();
         Calendar calendar = Calendar.getInstance();
+        int create = 1;
+        int isCreated = getIntegerValue("created");
         int currDay = calendar.get(Calendar.DAY_OF_MONTH);
-        int lastDay = getIntegerValue();
-        if(isDeviceOnline() && currDay != lastDay) {
-            putIntegerValue(currDay);
+        int lastDay = getIntegerValue("day");
+        if(create != isCreated){
+            putIntegerValue("created",create);
             Gestore g = new Gestore(this);
-            new BgTask(g, "client");
-        }else {
-            Intent i = new Intent(this, MainActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i);
+            new BgTask(g, "fetchData");
+        } else {
+            if (isDeviceOnline()  && currDay != lastDay) {
+                putIntegerValue("day",currDay);
+                Gestore g = new Gestore(this);
+                new BgTask(g, "readFile");
+            } else {
+                Intent i = new Intent(this, MainActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+            }
         }
     }
 
@@ -76,9 +84,9 @@ public class FirstActivity extends AppCompatActivity {
         }
     }
 
-    public boolean putIntegerValue(Integer value){
+    public boolean putIntegerValue(String KEY,Integer value){
         boolean returnvalue;
-        Preferences.Key<Integer> PREF_KEY = PreferencesKeys.intKey("day");
+        Preferences.Key<Integer> PREF_KEY = PreferencesKeys.intKey(KEY);
         Single<Preferences> updateResult =  dataStore.updateDataAsync(prefsIn -> {
             MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
             mutablePreferences.set(PREF_KEY, value);
@@ -88,9 +96,9 @@ public class FirstActivity extends AppCompatActivity {
         return returnvalue;
     }
 
-    int getIntegerValue() {
-        Preferences.Key<Integer> PREF_KEY = PreferencesKeys.intKey("day");
-        Single<Integer> value = dataStore.data().firstOrError().map(prefs -> prefs.get(PREF_KEY)).onErrorReturnItem(-1);
+    int getIntegerValue(String KEY) {
+        Preferences.Key<Integer> PREF_KEY = PreferencesKeys.intKey(KEY);
+        Single<Integer> value = dataStore.data().firstOrError().map(prefs -> prefs.get(PREF_KEY)).onErrorReturnItem(0);
         return value.blockingGet();
     }
 }

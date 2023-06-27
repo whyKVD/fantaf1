@@ -64,6 +64,10 @@ public class Pilota implements Parcelable {
         }
     }
 
+    public void addStanding(Standing aStanding){
+        standings.add(aStanding);
+    }
+
 
     public ArrayList<Standing> getStandings() {
         return standings;
