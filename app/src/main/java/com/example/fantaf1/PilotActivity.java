@@ -27,16 +27,20 @@ public class PilotActivity extends AppCompatActivity {
         LinearLayout stScroll = findViewById(R.id.standings);
         getExtra();
         TextView name = findViewById(R.id.name);
-        TextView second_name = findViewById(R.id.secondName);
         TextView permNum = findViewById(R.id.permNum);
         TextView constructor = findViewById(R.id.constructor);
         TextView nationality = findViewById(R.id.nationality);
+        TextView podi = findViewById(R.id.podi);
+        TextView granPremi = findViewById(R.id.granPremi);
+        TextView campionati = findViewById(R.id.campionati);
 
-        name.setText(p.getName());
-        //second_name.setText(p.getSecond_name());
-        permNum.setText(String.valueOf(p.getNumber()));
-        constructor.setText(cons);
-        nationality.setText(p.getNationality());
+        name.setText(name.getText()+p.getName());
+        permNum.setText(permNum.getText()+p.getNumber());
+        constructor.setText(constructor.getText()+p.getTeam());
+        nationality.setText(nationality.getText()+p.getNationality());
+        podi.setText(podi.getText()+p.getPodiums());
+        granPremi.setText(granPremi.getText()+p.getGrandPrixEntered());
+        campionati.setText(campionati.getText()+p.getWorldChamps());
         /*for (Standing s : standings) {
             StandingCard sc = new StandingCard(this,s.getRaceName(),s.getPos());
             stScroll.addView(sc.getV());
@@ -48,7 +52,5 @@ public class PilotActivity extends AppCompatActivity {
 
         Bundle extras = i.getExtras();
         p = (Pilota)extras.getParcelable("pilot");
-        cons = extras.getString("constructor");
-        standings = extras.getParcelableArrayList("standings");
     }
 }
