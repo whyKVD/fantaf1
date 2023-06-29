@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.fantaf1.buisness_logic.Gestore;
 import com.example.fantaf1.classes.Pilota;
 import com.example.fantaf1.classes.Standing;
-import com.example.fantaf1.view.StandingCard;
 
 import java.util.ArrayList;
 
@@ -34,14 +33,14 @@ public class PilotActivity extends AppCompatActivity {
         TextView nationality = findViewById(R.id.nationality);
 
         name.setText(p.getName());
-        second_name.setText(p.getSecond_name());
-        permNum.setText(String.valueOf(p.getPerm_num()));
+        //second_name.setText(p.getSecond_name());
+        permNum.setText(String.valueOf(p.getNumber()));
         constructor.setText(cons);
         nationality.setText(p.getNationality());
-        for (Standing s : standings) {
+        /*for (Standing s : standings) {
             StandingCard sc = new StandingCard(this,s.getRaceName(),s.getPos());
             stScroll.addView(sc.getV());
-        }
+        }*/
     }
 
     private void getExtra() {

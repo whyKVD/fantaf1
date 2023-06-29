@@ -19,7 +19,7 @@ public class DriverCard extends ParentView{
         number = v.findViewById(R.id.number);
 
         name.setText(aP.getName());
-        secondName.setText(aP.getSecond_name());
-        number.setText(String.valueOf(aP.getPerm_num()));
+        //secondName.setText(aP.getSecond_name());
+        number.setText(String.valueOf(aP.getNumber()));
     }
 }

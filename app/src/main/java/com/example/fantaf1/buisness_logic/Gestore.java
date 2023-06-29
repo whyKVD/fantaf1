@@ -10,8 +10,9 @@ import com.example.fantaf1.FirstActivity;
 import com.example.fantaf1.PilotActivity;
 import com.example.fantaf1.R;
 import com.example.fantaf1.classes.Constructor;
+import com.example.fantaf1.classes.FastestLap;
+import com.example.fantaf1.classes.GrandPrix;
 import com.example.fantaf1.classes.Pilota;
-import com.example.fantaf1.classes.Standing;
 import com.example.fantaf1.view.BottomMenu;
 import com.example.fantaf1.view.FormationCard;
 
@@ -21,6 +22,8 @@ public class Gestore {
     private final AppCompatActivity context;
     private ArrayList<Pilota> pilots = null;
     private ArrayList<Constructor> constructors = null;
+    private ArrayList<GrandPrix> grandPrix = null;
+    private ArrayList<FastestLap> fastsLap = null;
     private final Button home = null;
     private final Button formation = null;
     private BottomMenu bm = null;
@@ -33,23 +36,27 @@ public class Gestore {
 
     public void findPilots(String id){
         for (Pilota p : pilots) {
-            if (id.toLowerCase().contains(p.getName().toLowerCase()) | id.toLowerCase().contains(p.getSecond_name().toLowerCase()))
+            if (p.getName().toLowerCase().contains(id.toLowerCase()))
                 for (Constructor c : constructors) {
-                    if (c.getConstructorId().equalsIgnoreCase(p.getConstructor())) {
-                        startActivity("pilota", PilotActivity.class, p, c, p.getStandings());
-                        return;
-                    }
+                    startActivityWithParams("pilota", PilotActivity.class, p);
+                    return;
                 }
         }
     }
 
-    private void startActivity(String action,Class<?> where,Object... p) {
+    public void setGrandPrix(ArrayList<GrandPrix> grandPrix) {
+        this.grandPrix = grandPrix;
+    }
+
+    public void setFastsLap(ArrayList<FastestLap> fastsLap) {
+        this.fastsLap = fastsLap;
+    }
+
+    private void startActivityWithParams(String action, Class<?> where, Object... p) {
         Intent i = new Intent(context,where);
         switch (action) {
             case "pilota":
                 i.putExtra("pilot", (Pilota) p[0]);
-                i.putExtra("constructor", ((Constructor) p[1]).getName());
-                i.putParcelableArrayListExtra("standings", ((ArrayList<Standing>) p[2]));
                 break;
             default:
                 break;

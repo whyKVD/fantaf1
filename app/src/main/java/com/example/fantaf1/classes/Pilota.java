@@ -5,38 +5,33 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
 /**
  *
  * @author Alessandro
  */
 public class Pilota implements Parcelable {
-    private String constructor = null;
+    private String name,
+            number,
+            team,
+            nationality,
+            podiums,
+            grandPrixEntered,
+            worldChamps,
+            dateOfBirth,
+            placeOfBirth;
 
-    private String code = null;
-    private String birth_date = null;
-    private String nationality = null;
-    private String name = null;
-    private String second_name = null;
-    private String driverId = null;
-    private int perm_num = 0,
-                punti = 0;
-    private ArrayList<Standing> standings = new ArrayList<>();
+    public Pilota() {}
 
     protected Pilota(Parcel in) {
-        constructor = in.readString();
-        code = in.readString();
-        birth_date = in.readString();
-        nationality = in.readString();
         name = in.readString();
-        second_name = in.readString();
-        driverId = in.readString();
-        perm_num = in.readInt();
-        punti = in.readInt();
+        number = in.readString();
+        team = in.readString();
+        nationality = in.readString();
+        podiums = in.readString();
+        grandPrixEntered = in.readString();
+        worldChamps = in.readString();
+        dateOfBirth = in.readString();
+        placeOfBirth = in.readString();
     }
 
     public static final Creator<Pilota> CREATOR = new Creator<Pilota>() {
@@ -51,129 +46,81 @@ public class Pilota implements Parcelable {
         }
     };
 
-    public void setStandings(ArrayList<Standing> standings) {
-        this.standings = standings;
-    }
-    public void setStandings(JSONArray sts) {
-        for (int i = 0; i < sts.length(); i++) {
-            try {
-                JSONObject obj = (JSONObject) sts.get(i);
-                Standing s = new Standing(obj);
-                standings.add(s);
-            }catch (Exception ignored){}
-        }
+    public String getName() {
+        return name;
     }
 
-    public void addStanding(Standing aStanding){
-        standings.add(aStanding);
+    public String getNumber() {
+        return number;
     }
 
-
-    public ArrayList<Standing> getStandings() {
-        return standings;
-    }
-
-    /**
-     *  the basic contructor
-     */
-    public Pilota(String aDriverId, String aConstructor, String aCode,  int aPerm_num, String aNationality, String aName, String aSecond_name, String aBirth_date) {
-        driverId = aDriverId;
-        constructor = aConstructor;
-        code = aCode;
-        birth_date = aBirth_date;
-        nationality = aNationality;
-        name = aName;
-        second_name = aSecond_name;
-        perm_num = aPerm_num;
-    }
-
-    public Pilota(JSONObject obj){
-        try {
-            driverId = obj.get("driverId").toString();
-            constructor = obj.get("constructor").toString();
-            code = obj.get("code").toString();
-            birth_date = obj.get("birth_date").toString();
-            nationality = obj.get("nationality").toString();
-            name = obj.get("name").toString();
-            second_name = obj.get("second_name").toString();
-            perm_num = Integer.parseInt(obj.get("perm_num").toString());
-            setStandings(obj.getJSONArray("standings"));
-        }catch (Exception ignored){}
-    }
-
-    public void addPoint(JSONObject result) {
-        try {
-            if ((boolean)result.get("giroVeloce"))
-                punti += 5;
-            switch ((int)result.get("pos")){
-                case 1: punti += 25;
-                    break;
-                case 2: punti += 18;
-                    break;
-                case 3: punti += 15;
-                    break;
-                case 4: punti += 12;
-                    break;
-                case 5: punti += 10;
-                    break;
-                case 6: punti += 8;
-                    break;
-                case 7: punti += 6;
-                    break;
-                case 8: punti += 4;
-                    break;
-                case 9: punti += 2;
-                    break;
-                case 10: punti += 1;
-                    break;
-                case -1: punti -= 20;
-                    break;
-                default:
-                    break;
-            }
-        }catch (Exception ignored){}
-    }
-
-    public String getConstructor() {
-        return constructor;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getBirth_date() {
-        return birth_date;
+    public String getTeam() {
+        return team;
     }
 
     public String getNationality() {
         return nationality;
     }
 
-    public String getName() {
-        return name;
+    public String getPodiums() {
+        return podiums;
     }
 
-    public String getSecond_name() {
-        return second_name;
+    public String getGrandPrixEntered() {
+        return grandPrixEntered;
     }
 
-    public String getDriverId() {
-        return driverId;
+    public String getWorldChamps() {
+        return worldChamps;
     }
 
-    public int getPerm_num() {
-        return perm_num;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    @NonNull
+    public String getPlaceOfBirth() {
+        return placeOfBirth;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public void setTeam(String team) {
+        this.team = team;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public void setPodiums(String podiums) {
+        this.podiums = podiums;
+    }
+
+    public void setGrandPrixEntered(String grandPrixEntered) {
+        this.grandPrixEntered = grandPrixEntered;
+    }
+
+    public void setWorldChamps(String worldChamps) {
+        this.worldChamps = worldChamps;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setPlaceOfBirth(String placeOfBirth) {
+        this.placeOfBirth = placeOfBirth;
+    }
+
     @Override
     public String toString() {
-        return "Pilota{" + "constructor=" + constructor + ", code=" + code + ", birth_date=" + birth_date + ", nationality=" + nationality + ", name=" + name + ", second_name=" + second_name + ", driverId=" + driverId + ", perm_num=" + perm_num + '}';
-    }
-
-    public int getPunti() {
-        return punti;
+        return "Pilota{" + "name=" + name + ", number=" + number + ", team=" + team + ", nationality=" + nationality + ", podiums=" + podiums + ", grandPrixEntered=" + grandPrixEntered + ", worldChamps=" + worldChamps + ", dateOfBirth=" + dateOfBirth + ", placeOfBirth=" + placeOfBirth + '}';
     }
 
     @Override
@@ -183,15 +130,15 @@ public class Pilota implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
-        parcel.writeString(constructor);
-        parcel.writeString(code);
-        parcel.writeString(birth_date);
-        parcel.writeString(nationality);
         parcel.writeString(name);
-        parcel.writeString(second_name);
-        parcel.writeString(driverId);
-        parcel.writeInt(perm_num);
-        parcel.writeInt(punti);
+        parcel.writeString(number);
+        parcel.writeString(team);
+        parcel.writeString(nationality);
+        parcel.writeString(podiums);
+        parcel.writeString(grandPrixEntered);
+        parcel.writeString(worldChamps);
+        parcel.writeString(dateOfBirth);
+        parcel.writeString(placeOfBirth);
     }
 }
 

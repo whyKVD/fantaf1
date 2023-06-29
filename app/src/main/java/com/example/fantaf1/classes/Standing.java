@@ -6,38 +6,31 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import org.json.JSONObject;
-
 /**
  *
  * @author Alessandro
  */
 public class Standing implements Parcelable {
-    private String raceName = null,
+    private String name = null,
+            secondName = null,
+            code = null,
             pos = null,
-            date = null;
-    private Circuit circuit = null;
+            laps = null,
+            number = null,
+            constructor = null,
+            time = null;
 
-    public Standing(String aRaceName, String aPos, String aDate, Circuit aCircuit) {
-        raceName = aRaceName;
-        pos = aPos;
-        date = aDate;
-        circuit = aCircuit;
-    }
-
-    public Standing(JSONObject obj) {
-        try {
-            raceName = obj.get("raceName").toString();
-            pos = obj.get("pos").toString();
-            date = obj.get("date").toString();
-            circuit = new Circuit((JSONObject) obj.get("circuit"));
-        }catch (Exception ex){}
-    }
+    public Standing() {}
 
     protected Standing(Parcel in) {
-        raceName = in.readString();
+        name = in.readString();
+        secondName = in.readString();
+        code = in.readString();
         pos = in.readString();
-        date = in.readString();
+        laps = in.readString();
+        number = in.readString();
+        constructor = in.readString();
+        time = in.readString();
     }
 
     public static final Creator<Standing> CREATOR = new Creator<Standing>() {
@@ -52,26 +45,45 @@ public class Standing implements Parcelable {
         }
     };
 
-    public String getRaceName() {
-        return raceName;
+    public void setName(String n) {
+        name = n;
     }
 
-    public String getPos() {
-        return pos;
+    public void setSecondName(String s){
+        secondName = s;
     }
 
-    public String getDate() {
-        return date;
+    public void setCode(String c){
+        code = c;
     }
 
-    public Circuit getCircuit() {
-        return circuit;
+    public void setPos(String p) {
+        pos = p;
     }
 
-    @NonNull
+    public void setLaps(String l) {
+        laps = l;
+    }
+
+    public void setNumber(String n) {
+        number = n;
+    }
+
+    public void setConstructor(String c){
+        constructor = c;
+    }
+
+    public void setTime(String t){
+        time = t;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
     @Override
     public String toString() {
-        return "Standing{" + "raceName=" + raceName + ", pos=" + pos + ", date=" + date + ", circuit=" + circuit.toString() + '}';
+        return "Standing{" + "name=" + name + ", secondName=" + secondName + ", code=" + code + ", pos=" + pos + ", laps=" + laps + ", number=" + number + ", constructor=" + constructor + ", time=" + time + '}';
     }
 
     @Override
@@ -81,8 +93,13 @@ public class Standing implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
-        parcel.writeString(raceName);
+        parcel.writeString(name);
+        parcel.writeString(secondName);
+        parcel.writeString(code);
         parcel.writeString(pos);
-        parcel.writeString(date);
+        parcel.writeString(laps);
+        parcel.writeString(number);
+        parcel.writeString(constructor);
+        parcel.writeString(time);
     }
 }

@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         g = new Gestore(this);
-        new BgTask(g, "readFile","drivers.json");
+        new BgTask(g, "readAllFile");
         Button searchP = findViewById(R.id.searchPilot);
         EditText name = findViewById(R.id.nameTOsearch);
         searchP.setOnClickListener(view -> new BgTask(g,"findPilot",name.getText().toString()));

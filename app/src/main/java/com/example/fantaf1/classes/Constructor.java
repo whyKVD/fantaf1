@@ -5,35 +5,36 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import org.json.JSONObject;
-
 /**
  *
  * @author Alessandro
  */
 public class Constructor implements Parcelable {
-    private String constructorId = null,
-            name = null,
-            nationality = null;
+    String name,
+            base,
+            teamChief,
+            techChief,
+            chassis,
+            powUnit,
+            firstTeamEntry,
+            worldChamps,
+            polePos,
+            fastestlap;
 
-    public Constructor(String aConstructorId, String aName, String aNationality) {
-        constructorId = aConstructorId;
-        name = aName;
-        nationality = aNationality;
-    }
-
-    public Constructor(JSONObject obj){
-        try {
-            constructorId = obj.get("constructorId").toString();
-            name = obj.get("name").toString();
-            nationality = obj.get("nationality").toString();
-        }catch (Exception ignored){}
+    public Constructor() {
     }
 
     protected Constructor(Parcel in) {
-        constructorId = in.readString();
         name = in.readString();
-        nationality = in.readString();
+        base = in.readString();
+        teamChief = in.readString();
+        techChief = in.readString();
+        chassis = in.readString();
+        powUnit = in.readString();
+        firstTeamEntry = in.readString();
+        worldChamps = in.readString();
+        polePos = in.readString();
+        fastestlap = in.readString();
     }
 
     public static final Creator<Constructor> CREATOR = new Creator<Constructor>() {
@@ -48,18 +49,49 @@ public class Constructor implements Parcelable {
         }
     };
 
-    public String getConstructorId() {
-        return constructorId;
+    public void setBase(String base) {
+        this.base = base;
     }
 
-    public String getName() {
-        return name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @NonNull
+    public void setTeamChief(String teamChief) {
+        this.teamChief = teamChief;
+    }
+
+    public void setTechChief(String techChief) {
+        this.techChief = techChief;
+    }
+
+    public void setChassis(String chassis) {
+        this.chassis = chassis;
+    }
+
+    public void setPowUnit(String powUnit) {
+        this.powUnit = powUnit;
+    }
+
+    public void setFirstTeamEntry(String firstTeamEntry) {
+        this.firstTeamEntry = firstTeamEntry;
+    }
+
+    public void setWorldChamps(String worldChamps) {
+        this.worldChamps = worldChamps;
+    }
+
+    public void setPolePos(String polePos) {
+        this.polePos = polePos;
+    }
+
+    public void setFastestlap(String fastestlap) {
+        this.fastestlap = fastestlap;
+    }
+
     @Override
     public String toString() {
-        return "Constructor{" + "constructorId=" + constructorId + ", name=" + name + '}';
+        return "Constructor{" + "name=" + name + ", base=" + base + ", teamChief=" + teamChief + ", techChief=" + techChief + ", chassis=" + chassis + ", powUnit=" + powUnit + ", firstTeamEntry=" + firstTeamEntry + ", worldChamps=" + worldChamps + ", polePos=" + polePos + ", fastestlap=" + fastestlap + '}';
     }
 
     @Override
@@ -69,9 +101,16 @@ public class Constructor implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
-        parcel.writeString(constructorId);
         parcel.writeString(name);
-        parcel.writeString(nationality);
+        parcel.writeString(base);
+        parcel.writeString(teamChief);
+        parcel.writeString(techChief);
+        parcel.writeString(chassis);
+        parcel.writeString(powUnit);
+        parcel.writeString(firstTeamEntry);
+        parcel.writeString(worldChamps);
+        parcel.writeString(polePos);
+        parcel.writeString(fastestlap);
     }
 }
 
