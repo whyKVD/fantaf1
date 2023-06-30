@@ -2,11 +2,11 @@ package com.example.fantaf1;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fantaf1.buisness_logic.BgTask;
 import com.example.fantaf1.buisness_logic.Gestore;
 import com.example.fantaf1.classes.Pilota;
 import com.example.fantaf1.classes.Standing;
@@ -24,7 +24,7 @@ public class PilotActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pilot);
         Gestore g = new Gestore(this);
-        LinearLayout stScroll = findViewById(R.id.standings);
+        new BgTask(g,"readFile","grandPrix.json");
         getExtra();
         TextView name = findViewById(R.id.name);
         TextView permNum = findViewById(R.id.permNum);
@@ -41,10 +41,6 @@ public class PilotActivity extends AppCompatActivity {
         podi.setText(podi.getText()+p.getPodiums());
         granPremi.setText(granPremi.getText()+p.getGrandPrixEntered());
         campionati.setText(campionati.getText()+p.getWorldChamps());
-        /*for (Standing s : standings) {
-            StandingCard sc = new StandingCard(this,s.getRaceName(),s.getPos());
-            stScroll.addView(sc.getV());
-        }*/
     }
 
     private void getExtra() {

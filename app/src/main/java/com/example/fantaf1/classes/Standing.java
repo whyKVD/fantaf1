@@ -45,6 +45,10 @@ public class Standing implements Parcelable {
         }
     };
 
+    public String getPos() {
+        return pos;
+    }
+
     public void setName(String n) {
         name = n;
     }

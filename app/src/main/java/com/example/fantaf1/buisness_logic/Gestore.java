@@ -44,6 +44,14 @@ public class Gestore {
         }
     }
 
+    public ArrayList<GrandPrix> getGrandPrix() {
+        return grandPrix;
+    }
+
+    public ArrayList<FastestLap> getFastsLap() {
+        return fastsLap;
+    }
+
     public void setGrandPrix(ArrayList<GrandPrix> grandPrix) {
         this.grandPrix = grandPrix;
     }

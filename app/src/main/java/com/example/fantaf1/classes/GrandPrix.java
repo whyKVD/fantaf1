@@ -23,8 +23,16 @@ public class GrandPrix {
         this.date = date;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String getUrl() {
         return url;
+    }
+
+    public ArrayList<Standing> getStandings() {
+        return standings;
     }
 
     public void setStandings(ArrayList<Standing> standings) {

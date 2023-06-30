@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".PilotActivity"
     android:gravity="center">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
     <LinearLayout
         android:id="@+id/specific"
         android:layout_width="match_parent"
@@ -81,19 +85,26 @@
     <ScrollView
         android:id="@+id/standingsScroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="120dp"
-        android:layout_below="@id/specific"
-        android:layout_alignParentBottom="true">
+        android:layout_height="220dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="120dp">
         <LinearLayout
             android:id="@+id/standings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="70dp"
+            android:paddingTop="15dp"
             android:layout_marginHorizontal="30dp">
 
         </LinearLayout>
     </ScrollView>
+        <include
+            android:id="@+id/loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:layout_centerInParent="true"
+            layout="@layout/loading"/>
+    </FrameLayout>
 
 </RelativeLayout>
