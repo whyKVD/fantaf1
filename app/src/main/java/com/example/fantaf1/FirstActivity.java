@@ -55,15 +55,15 @@ public class FirstActivity extends AppCompatActivity {
         int isCreated = getIntegerValue("created");
         int currDay = calendar.get(Calendar.DAY_OF_MONTH);
         int lastDay = getIntegerValue("day");
-        if(/*create != isCreated*/true){
-            //putIntegerValue("created",create);
+        if(create != isCreated){
+            putIntegerValue("created",create);
             Gestore g = new Gestore(this);
             new BgTask(g, "fetchData");
         } else {
             if (isDeviceOnline()  && currDay != lastDay) {
                 putIntegerValue("day",currDay);
                 Gestore g = new Gestore(this);
-                new BgTask(g, "readFile");
+                new BgTask(g, "updateStandings");
             } else {
                 Intent i = new Intent(this, MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

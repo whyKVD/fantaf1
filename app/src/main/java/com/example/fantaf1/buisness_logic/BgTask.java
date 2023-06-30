@@ -47,12 +47,7 @@ public class BgTask {
                 case "fetchData":
                     BgTask.this.action = params[0];
                     //fetching data from api
-                    F1APIservice f1APIservice = new F1APIservice(g);
-                    try {
-                        f1APIservice.scrapeData();
-                    }catch (Exception ex){
-                        ex.printStackTrace();
-                    }
+                    new F1APIservice(g).scrapeData();
                     break;
                 case "readAllFile":
                     BgTask.this.action = params[0];
@@ -107,11 +102,18 @@ public class BgTask {
                     BgTask.this.action = params[0];
                     g.findPilots(params[1]);
                     break;
+                case "updateStandings":
+                    new F1APIservice(g).updateStandings();
+
+                    Intent i = new Intent(g.getContext(), MainActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    g.getContext().startActivity(i);
+                    break;
                 default:
                     break;
             }
 
-            handler.post(() ->{
+            handler.post(() -> {
                 switch (action){
                     case "fetchData":
                         Intent i = new Intent(g.getContext(), MainActivity.class);
@@ -125,37 +127,19 @@ public class BgTask {
                             g.row(3);
                         } else if (g.getContext().getClass().equals(PilotActivity.class)) {
                             g.getContext().runOnUiThread(()->{
-                                //Pilota p = g.getContext().getIntent().getParcelableExtra("pilota");
+                                Pilota p = g.getPilots().get(0);
                                 LinearLayout stScroll = g.getContext().findViewById(R.id.standings);
 
                                 for(GrandPrix gp : g.getGrandPrix()){
                                     for(Standing st: gp.getStandings()){
-                                        if(st.getNumber().equals("1")) {
+                                        if(st.getNumber().equals(p.getNumber())) {
                                             StandingCard sc = new StandingCard(g.getContext(), gp.getName(), st.getPos());
                                             stScroll.addView(sc.getV());
                                         }
                                     }
                                 }
                             });
-                        } /* else if (g.getContext().getClass().equals(FirstActivity.class)) {
-                            F1APIservice f1 = new F1APIservice(g);
-                            try {
-                                ArrayList<Object> obj = f1.updateStandings();
-                                File file = new File(g.getContext().getFilesDir(), "drivers.json");
-
-                                FileOutputStream fos = new FileOutputStream(file);
-                                OutputStreamWriter osw = new OutputStreamWriter(fos);
-                                osw.write(new Gson().toJson(obj));
-                                osw.flush();
-                                osw.close();
-                                fos.close();
-                            }catch(Exception ex){}
-
-                            i = new Intent(g.getContext(), MainActivity.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            g.getContext().startActivity(i);
-                            break;
-                        }*/
+                        }
                         break;
                     default:
                         break;

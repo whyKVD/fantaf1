@@ -80,6 +80,16 @@ public class F1APIservice {
         }
     }
 
+    public void updateStandings(){
+        Year thisYear = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            thisYear = Year.now();
+        }
+        String year = String.valueOf(thisYear);
+
+        getGrandprix(HOST+"en/results.html/" + year + "/races.html");
+    }
+
     private void writeJson(String fileName,Object o){
         context.runOnUiThread(()->{
             File f = new File(context.getFilesDir(),fileName);

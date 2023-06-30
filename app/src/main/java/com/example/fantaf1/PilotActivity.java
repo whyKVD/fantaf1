@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class PilotActivity extends AppCompatActivity {
     private Pilota p = null;
     private String cons;
+    private Gestore g;
 
     private ArrayList<Standing> standings;
 
@@ -23,9 +24,9 @@ public class PilotActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pilot);
-        Gestore g = new Gestore(this);
-        new BgTask(g,"readFile","grandPrix.json");
+        g = new Gestore(this);
         getExtra();
+        new BgTask(g,"readFile","grandPrix.json");
         TextView name = findViewById(R.id.name);
         TextView permNum = findViewById(R.id.permNum);
         TextView constructor = findViewById(R.id.constructor);
@@ -48,5 +49,8 @@ public class PilotActivity extends AppCompatActivity {
 
         Bundle extras = i.getExtras();
         p = (Pilota)extras.getParcelable("pilot");
+        ArrayList<Pilota> ps = new ArrayList<>();
+        ps.add(p);
+        g.setPilots(ps);
     }
 }
