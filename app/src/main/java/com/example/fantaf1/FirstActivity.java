@@ -55,21 +55,17 @@ public class FirstActivity extends AppCompatActivity {
         setContentView(R.layout.activity_first);
         dataStore = new RxPreferenceDataStoreBuilder(this, "database").build();
         int isCreated = getIntegerValue("created");
-        int lastDay = getIntegerValue("day");
         if(create != isCreated){
             putIntegerValue("created",create);
             Gestore g = new Gestore(this);
             new BgTask(g, "fetchData");
+        } else if (isDeviceOnline()  && currDay == 2) {
+            Gestore g = new Gestore(this);
+            new BgTask(g, "updateStandings");
         } else {
-            if (isDeviceOnline()  && currDay != lastDay) {
-                putIntegerValue("day",currDay);
-                Gestore g = new Gestore(this);
-                new BgTask(g, "updateStandings");
-            } else {
-                Intent i = new Intent(this, MainActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(i);
-            }
+            Intent i = new Intent(this, MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
         }
     }
 

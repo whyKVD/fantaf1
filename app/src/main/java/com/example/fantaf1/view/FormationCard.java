@@ -41,18 +41,24 @@ public class FormationCard extends ParentView{
             for (Pilota tmp : p) {
                 dcs.add(new DriverCard(context,tmp));
                 l.addView(dcs.get(dcs.size()-1).getV());
-                dcs.get(dcs.size()-1).getV().setOnClickListener(view -> clicked(dcs.get(dcs.size()-1).getV()));
+                dcs.get(dcs.size()-1).getV().setOnClickListener(view -> {
+                    for (DriverCard d : dcs) {
+                        if (d.getV().equals(view))
+                            clicked(view);
+                    }
+                });
             }
             add.setVisibility(View.INVISIBLE);
             add.setEnabled(false);
         });
     }
 
-    private void clicked(View v) {
+    private void clicked(View view) {
         context.runOnUiThread(() -> {
-            name.setText(((TextView) v.findViewById(R.id.name)).getText().toString());
-            secondName.setText(((TextView) v.findViewById(R.id.secondName)).getText().toString());
-            number.setText(((TextView) v.findViewById(R.id.number)).getText().toString());
+            ((TextView)v.findViewById(R.id.name)).setText(((TextView) view.findViewById(R.id.name)).getText().toString());
+            //name.setText(((TextView) view.findViewById(R.id.name)).getText().toString());
+            ((TextView)v.findViewById(R.id.secondName)).setText(((TextView) view.findViewById(R.id.secondName)).getText().toString());
+            number.setText(((TextView) view.findViewById(R.id.number)).getText().toString());
             l.setVisibility(View.INVISIBLE);
         });
     }

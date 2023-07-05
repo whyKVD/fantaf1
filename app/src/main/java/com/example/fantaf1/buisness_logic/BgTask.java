@@ -105,11 +105,8 @@ public class BgTask {
                     g.findPilots(params[1]);
                     break;
                 case "updateStandings":
+                    BgTask.this.action = params[0];
                     new F1APIservice(g).updateStandings();
-
-                    Intent i = new Intent(g.getContext(), MainActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    g.getContext().startActivity(i);
                     break;
                 default:
                     break;
@@ -118,6 +115,7 @@ public class BgTask {
             handler.post(() -> {
                 switch (action){
                     case "fetchData":
+                    case "updateStandings":
                         Intent i = new Intent(g.getContext(), MainActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         g.getContext().startActivity(i);

@@ -23,6 +23,7 @@ public class Gestore {
     private ArrayList<Constructor> constructors = null;
     private ArrayList<GrandPrix> grandPrix = null;
     private ArrayList<FastestLap> fastsLap = null;
+    private ArrayList<FormationCard> formationCards = new ArrayList<>();
 
     public Gestore(AppCompatActivity aContext){
         context = aContext;
@@ -88,8 +89,8 @@ public class Gestore {
     public void initRow(int row) {
         LinearLayout l = context.findViewById(row);
         for (int i = 0; i < 3; i++) {
-            FormationCard f = new FormationCard(context,getPilots());
-            l.addView(f.getV());
+            formationCards.add(new FormationCard(context,getPilots()));
+            l.addView(formationCards.get(formationCards.size()-1).getV());
         }
     }
 
