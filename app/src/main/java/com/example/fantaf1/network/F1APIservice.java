@@ -18,7 +18,6 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,21 +28,9 @@ public class F1APIservice {
 
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36";
 
-    private final int MINTIME = 270;
-
-    private final ArrayList<Pilota> pilots = new ArrayList<>();
-    private ArrayList<Standing> standings = null;
-    private String records = "";
-    private int responseCode = 0;
-    private URL url = null;
-    private long start = 0;
-    private final ArrayList<Constructor> constructors = new ArrayList<>();
-
     private final AppCompatActivity context;
-    private final Gestore g;
 
     public F1APIservice(Gestore aG){
-        g = aG;
         context = aG.getContext();
     }
 
@@ -87,7 +74,16 @@ public class F1APIservice {
         }
         String year = String.valueOf(thisYear);
 
-        getGrandprix(HOST+"en/results.html/" + year + "/races.html");
+        Thread thread1 = new Thread(()-> getGrandprix(HOST+"en/results.html/" + year + "/races.html"));
+        Thread thread4 = new Thread(()-> getFastestLap(HOST + "en/results.html/" + year + "/fastest-laps.html"));
+
+        thread1.start();
+        thread4.start();
+
+        try{
+            thread1.join();
+            thread4.join();
+        }catch(Exception ignored){}
     }
 
     private void writeJson(String fileName,Object o){
@@ -95,7 +91,7 @@ public class F1APIservice {
             File f = new File(context.getFilesDir(),fileName);
             try (FileWriter myWriter = new FileWriter(f)) {
                 myWriter.write(new Gson().toJson(o));
-            } catch (IOException e) {}
+            } catch (IOException ignored) {}
         });
     }
 
@@ -251,12 +247,7 @@ public class F1APIservice {
                         .userAgent(USER_AGENT)
                         .header("Accepted-Language", "*")
                         .get();
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
-
-            Element table = doc.select("table").get(0);
-            Element tbody = table.select("tbody").get(0);
+            } catch (Exception ignored) {}
 
             Elements rows = doc.select("table").get(0).select("tbody").get(0).select("tr");
 
@@ -270,8 +261,7 @@ public class F1APIservice {
             p.setDateOfBirth(rows.get(8).select("td").get(0).text());
             p.setPlaceOfBirth(rows.get(9).select("td").get(0).text());
 
-            Element m = doc.select("main").get(0);
-            Element figCap = m.selectFirst("figcaption");
+            Element figCap = doc.select("main").get(0).selectFirst("figcaption");
 
             p.setNumber(figCap.select("div").get(0).select("span").get(0).text());
             p.setName(figCap.select("h1").get(0).text());
@@ -296,8 +286,7 @@ public class F1APIservice {
 
         List<FastestLap> fls = new ArrayList<>();
 
-        Element products = doc.select("table").get(0);
-        Element tbody = products.select("tbody").get(0);
+        Element tbody = doc.select("table").get(0).select("tbody").get(0);
 
         Elements rows = tbody.select("tr");
 

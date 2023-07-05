@@ -35,14 +35,16 @@ public class BgTask {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private String action = null;
 
-    private static String[] files = {"constructors.json","drivers.json","fastestsLap.json","grandPrix.json"};
+    private final String[] files = {"constructors.json","drivers.json","fastestsLap.json","grandPrix.json"};
 
     public BgTask(Gestore g, String... params){
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             try {
                 g.getContext().runOnUiThread(() -> g.getContext().findViewById(R.id.loader).setVisibility(View.VISIBLE));
-            }catch(Exception ex){}
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
             switch (params[0]) {
                 case "fetchData":
                     BgTask.this.action = params[0];
@@ -51,7 +53,7 @@ public class BgTask {
                     break;
                 case "readAllFile":
                     BgTask.this.action = params[0];
-                    String data = null;
+                    String data;
                     try {
                         try {
                             for(String f : files){
@@ -146,7 +148,9 @@ public class BgTask {
                 }
                 try {
                     g.getContext().runOnUiThread(() -> g.getContext().findViewById(R.id.loader).setVisibility(View.INVISIBLE));
-                }catch(Exception ex){}
+                }catch(Exception ex){
+                    ex.printStackTrace();
+                }
             });
         });
     }
@@ -241,6 +245,6 @@ public class BgTask {
                 }
                 default -> {}
             }
-        }catch (Exception ex){}
+        }catch (Exception ignored){}
     }
 }

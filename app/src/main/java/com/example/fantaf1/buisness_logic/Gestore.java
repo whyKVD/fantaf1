@@ -1,7 +1,6 @@
 package com.example.fantaf1.buisness_logic;
 
 import android.content.Intent;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,23 +23,19 @@ public class Gestore {
     private ArrayList<Constructor> constructors = null;
     private ArrayList<GrandPrix> grandPrix = null;
     private ArrayList<FastestLap> fastsLap = null;
-    private final Button home = null;
-    private final Button formation = null;
-    private BottomMenu bm = null;
 
     public Gestore(AppCompatActivity aContext){
         context = aContext;
         if(!context.getClass().equals(FirstActivity.class))
-            bm = new BottomMenu(context);
+            new BottomMenu(context);
     }
 
     public void findPilots(String id){
         for (Pilota p : pilots) {
-            if (p.getName().toLowerCase().contains(id.toLowerCase()))
-                for (Constructor c : constructors) {
-                    startActivityWithParams("pilota", PilotActivity.class, p);
-                    return;
-                }
+            if (p.getName().toLowerCase().contains(id.toLowerCase())) {
+                startActivityWithParams("pilota", PilotActivity.class, p);
+                return;
+            }
         }
     }
 
@@ -63,11 +58,9 @@ public class Gestore {
     private void startActivityWithParams(String action, Class<?> where, Object... p) {
         Intent i = new Intent(context,where);
         switch (action) {
-            case "pilota":
-                i.putExtra("pilot", (Pilota) p[0]);
-                break;
-            default:
-                break;
+            case "pilota" -> i.putExtra("pilot", (Pilota) p[0]);
+            default -> {
+            }
         }
         context.startActivity(i);
     }
@@ -101,15 +94,12 @@ public class Gestore {
     }
 
     public void row(int i) {
-        switch (i){
-            case 1:initRow(R.id.firstRow);
-                break;
-            case 2:initRow(R.id.secondRow);
-                break;
-            case 3:initRow(R.id.thirdRow);
-                break;
-            default:
-                break;
+        switch (i) {
+            case 1 -> initRow(R.id.firstRow);
+            case 2 -> initRow(R.id.secondRow);
+            case 3 -> initRow(R.id.thirdRow);
+            default -> {
+            }
         }
     }
 }

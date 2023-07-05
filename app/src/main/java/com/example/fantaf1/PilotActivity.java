@@ -9,16 +9,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.fantaf1.buisness_logic.BgTask;
 import com.example.fantaf1.buisness_logic.Gestore;
 import com.example.fantaf1.classes.Pilota;
-import com.example.fantaf1.classes.Standing;
 
 import java.util.ArrayList;
 
 public class PilotActivity extends AppCompatActivity {
     private Pilota p = null;
-    private String cons;
     private Gestore g;
-
-    private ArrayList<Standing> standings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +44,7 @@ public class PilotActivity extends AppCompatActivity {
         Intent i = getIntent();
 
         Bundle extras = i.getExtras();
-        p = (Pilota)extras.getParcelable("pilot");
+        p = extras.getParcelable("pilot");
         ArrayList<Pilota> ps = new ArrayList<>();
         ps.add(p);
         g.setPilots(ps);

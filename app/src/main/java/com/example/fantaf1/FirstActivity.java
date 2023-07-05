@@ -45,15 +45,16 @@ public class FirstActivity extends AppCompatActivity {
         }
     };
 
+    private final int create = 1;
+
+    private final int currDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
         dataStore = new RxPreferenceDataStoreBuilder(this, "database").build();
-        Calendar calendar = Calendar.getInstance();
-        int create = 1;
         int isCreated = getIntegerValue("created");
-        int currDay = calendar.get(Calendar.DAY_OF_MONTH);
         int lastDay = getIntegerValue("day");
         if(create != isCreated){
             putIntegerValue("created",create);
